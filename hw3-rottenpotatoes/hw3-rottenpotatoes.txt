@@ -1,0 +1,3 @@
+老师好：
+    我没能成功把项目部署到heroku上面。
+    cloud9的外网访问地址：https://workspace-a201548300108043-2.c9.io/movies
