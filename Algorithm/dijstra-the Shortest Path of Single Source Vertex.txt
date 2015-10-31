@@ -1,0 +1,125 @@
+#include <iostream>  
+using namespace std;  
+ #define N 5  
+ #define MAX 65535  
+  int g[N][N];  
+  void min_path(int v,long *d,int *p)  
+  {  
+          int i = 0;  
+          int j = 0;  
+         bool s[N]={false};  
+         for(i=0;i<N;i++)  
+                 for(j=0;j<N;j++)  
+                         if(g[i][j] == -1)  
+                                 g[i][j] = 65536;  
+         for(i = 0;i<N;i++)                
+         {  
+                 d[i] = g[v][i];  
+                 if(d[i] == MAX)  
+                         p[i] = 0;  
+                 else      
+                         p[i] = v;  
+         }                 
+           
+         s[v] = true;  
+         d[v] = 0;  
+         p[v] = 0;  
+           
+         int k = 0;  
+         for(i = 0 ;i<N;i++)  
+         {  
+                int min = 65535;  
+                for(j = 0 ;j<N;j++)  
+                 {  
+                         if(j != v && s[j] == false)  
+                         {  
+                                 if(d[j]<=min)  
+                                 {  
+                                        min = d[j];  
+                                    k = j;//k是V集合中具有最短“特殊路径的顶点”,所谓特殊路径即是从顶点v到k只经过U中的顶点。  
+                                 }  
+                         }  
+                 }  
+                 s[k] = true;//将k从V集合中并入到U集合中  
+                 for(j=0;j<N;j++)  
+                 {  
+                         if(s[j]==false && d[j]>d[k]+g[k][j])  
+                         {  
+                                 d[j] = d[k] + g[k][j];//更新其他在V中的顶点的最短距离。  
+                                 p[j] = k;  
+                         }  
+                 }  
+         }  
+ }  
+ int main()  
+ {  
+         long d[N];  
+         int p[N];//p[i]代表到达顶点i的最短路径的前驱节点，随着路径变化而变化  
+         int i = 0;  
+		 /*手动输入边表
+         for(i = 0;i<N;i++)  
+         {  
+                 for(int j = 0;j<N;j++)  
+                         cin>>g[i][j];  
+         }  */
+		 g[0][0]=0;
+		 g[0][1]=100;
+	     g[0][2]=30;
+		 g[0][3]=-1;
+		 g[0][4]=10;
+		 g[1][0]=-1;
+		 g[1][1]=0;
+		 g[1][2]=-1;
+		 g[1][3]=-1;
+		 g[1][4]=-1;
+		 g[2][0]=60;
+		 g[2][1]=-1;
+		 g[2][2]=0;
+		 g[2][3]=60;
+		 g[2][4]=-1;
+		 g[3][0]=-1;
+		 g[3][1]=10;
+		 g[3][2]=-1;
+		 g[3][3]=0;
+		 g[3][4]=-1;
+		 g[4][0]=-1;
+		 g[4][1]=-1;
+		 g[4][2]=-1;
+		 g[4][3]=50;
+		 g[4][4]=-1;
+
+
+         min_path(0,d,p);  
+         /*
+         for( i =0;i<N;i++)  
+                 cout << d[i] << "  ";  
+         cout << endl;  
+		 */
+		 cout<<"最短路径长度及路径结点如下："<<endl<<endl;
+         //输出每条最短路径  
+         for(i = 0;i<N;i++)  
+         {  	
+			 
+                 if(i != 0)  
+                 {  
+					 cout<<"结点0到结点"<<i<<"的最短路径长度是："<<d[i]<<"\t路径是：";
+                         int pre = p[i];  
+						 if (pre==0)
+						 {
+							cout << i << "<--0"<<endl;
+						 }
+						 else
+						 {
+							  cout<<i<<"<--";
+							   while(pre!=0)  
+							   {  
+                                 cout << pre << "<--";  
+                                 pre = p[pre];  
+							   }
+							   cout<<"0"<<endl;
+						 }
+					        
+                         cout << endl;  
+                 }  
+         }  
+ } 
